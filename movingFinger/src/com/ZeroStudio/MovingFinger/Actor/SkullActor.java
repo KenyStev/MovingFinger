@@ -23,6 +23,7 @@ public class SkullActor extends Actor {
 	private TextureRegion[] skull;
 	public Rectangle bb;
 	private Vector2 velocidad = new Vector2(0,0);
+	private int score=0;
 	/**********************************************/
 
 	/****** CONSTRUCTOR ******/
@@ -42,7 +43,7 @@ public class SkullActor extends Actor {
 		translate(0, velocidad.y * delta);
 		
 		// asocia el bolding box de la calabera
-		// a su poscicion de origen y su tamaño
+		// a su poscicion de origen y su tamaï¿½o
 		bb.x=getX();
 		bb.y=getY();
 		bb.width=getWidth();
@@ -57,6 +58,14 @@ public class SkullActor extends Actor {
 	public void setVelocidad(float velocidadY){
 		velocidad.y=velocidadY;
 		
+	}
+	
+	public void setScore(int score){
+		this.score=score;
+	}
+	
+	public int getScore(){
+		return score;
 	}
 	
 	@Override

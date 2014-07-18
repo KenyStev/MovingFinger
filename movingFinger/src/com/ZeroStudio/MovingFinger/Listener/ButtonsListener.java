@@ -2,11 +2,8 @@ package com.ZeroStudio.MovingFinger.Listener;
 
 
 import com.ZeroStudio.MovingFinger.MovingFinger;
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.ApplicationListener;
+import com.ZeroStudio.MovingFinger.screen.GameplayScreen;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -39,32 +36,7 @@ public class ButtonsListener extends InputListener {
 		switch(this.screen){
 		case 1: game.setScreen(game.GAMEPLAY); break;
 		case 2: game.setScreen(game.MAIN); break;
-		case 3:
-			//BLU
-			try{
-				delayDispose(); //found more
-			}catch(Exception e){
-				
-			}
-			delayExit();
-			/****/
-			
-//			delayDispose();
-//			delayExit();
-			
-//			delayDispose(); //found more
-//			//with this
-//			try{
-////				game.dispose();
-//				delayExit();
-//			}catch(Exception e){ 
-//				
-//			}
-			
-//			game.dispose();
-//			Gdx.app.exit();
-			
-			break;
+		case 3: Gdx.app.exit(); break;
 		}
 		
 		super.touchUp(event, x, y, pointer, button);

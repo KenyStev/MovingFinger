@@ -46,12 +46,12 @@ public class GameOverScreen extends AbstractScreen{
 		
 		//Creamos una Nueva Bola
 		BallActor ball = new BallActor();
-		ball.setPosition(game.positionsActor.x, 76);
+		ball.setPosition(game.positionsActor.x, game.positionsActor.y);//y = 76 default
 		stage.addActor(ball);
 		
 		//Creamos la Skull que Colisiono
 		SkullActor skull = new SkullActor(0);
-		skull.setPosition(game.positionsActor.y, game.positionsActor.z);
+		skull.setPosition(game.positionsActor2.x, game.positionsActor2.y);
 		stage.addActor(skull);
 		
 		gameover = MovingFinger.MANAGER.get("gameover.png", Texture.class);
@@ -111,13 +111,18 @@ public class GameOverScreen extends AbstractScreen{
 
 	@Override
 	public void hide() {
+		stage.clear();
+		backMenu1.remove();
+		imgFondo.remove();
+		nowscore.remove();
+		
 		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override
 	public void dispose() {
-		
-		
+		stage.dispose();
+		gameover.dispose();
 	}
 	
 	@Override

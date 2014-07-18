@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 /* ******************************************************** *
  * LoadingScreen es la clase encargar de crear la pantalla loading,	*
  * donde aparece el Desarrollador: Zero Kull de Zero Studio,*
- * y el Diseñador de los Graficos: John Mackay.				*
+ * y el Diseï¿½ador de los Graficos: John Mackay.				*
  * ******************************************************** */
 
 public class LoadingScreen extends AbstractScreen {
@@ -51,7 +51,7 @@ public class LoadingScreen extends AbstractScreen {
 			}
 		}
 
-		if (MovingFinger.MANAGER.isLoaded("John.png", Texture.class)
+		if (MovingFinger.MANAGER.isLoaded("RosalilaStudio.png", Texture.class)
 				&& cont == cant) {
 			fondoAct.remove();
 			if (cont == cant) {
@@ -82,7 +82,7 @@ public class LoadingScreen extends AbstractScreen {
 			break;
 		case 2:
 			stage.clear();
-			fondo = MovingFinger.MANAGER.get("John.png", Texture.class);
+			fondo = MovingFinger.MANAGER.get("RosalilaStudio.png", Texture.class);
 			fondo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			fondoAct = new Image(fondo);
 			fondoAct.setPosition(
@@ -108,6 +108,7 @@ public class LoadingScreen extends AbstractScreen {
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
+		stage.clear();
 	}
 
 	@Override

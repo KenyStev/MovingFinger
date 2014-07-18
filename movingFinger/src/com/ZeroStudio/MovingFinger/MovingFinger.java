@@ -1,6 +1,7 @@
 package com.ZeroStudio.MovingFinger;
 
 
+
 import com.ZeroStudio.MovingFinger.Actor.PuntuacionMaximaActor;
 import com.ZeroStudio.MovingFinger.Actor.ScoreActor;
 import com.ZeroStudio.MovingFinger.screen.AbstractScreen;
@@ -12,6 +13,7 @@ import com.ZeroStudio.MovingFinger.screen.MainScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,12 +24,13 @@ import com.badlogic.gdx.math.Vector3;
 
 public class MovingFinger extends Game{
 	
-	public static final AssetManager MANAGER = new AssetManager();;
+	public static AssetManager MANAGER;
 	private SpriteBatch sb; //change public to private
 	public final AbstractScreen GAMEPLAY, GAMEOVER, LOADING, MAIN, INTRO;
 	public PuntuacionMaximaActor maxima;
 	public Preferences pref;
-	public Vector3 positionsActor= new Vector3();
+	public Vector2 positionsActor= new Vector2();
+	public Vector2 positionsActor2= new Vector2();
 	public ScoreActor score;
 	
 	private Vector2 nuvePos= new Vector2();
@@ -37,7 +40,7 @@ public class MovingFinger extends Game{
 
 	
 	public MovingFinger(){
-		//instancia las cuaro pantallas
+		//instancia las cinco pantallas
 		GAMEPLAY = new GameplayScreen(this);
 		GAMEOVER = new GameOverScreen(this);
 		LOADING = new LoadingScreen(this);
@@ -56,7 +59,10 @@ public class MovingFinger extends Game{
 		score = new ScoreActor(new BitmapFont(Gdx.files.internal("fonts/ArialBlack.fnt")));
 		
 		//Cargando todos los Assets al Manager
+		MANAGER = new AssetManager();
+		
 		MANAGER.load("zeroStudio.png", Texture.class);
+		MANAGER.load("RosalilaStudio.png", Texture.class);
 		MANAGER.load("John.png", Texture.class);
 		MANAGER.load("gameover.png", Texture.class);
 		MANAGER.load("ball.png", Texture.class);
@@ -69,6 +75,7 @@ public class MovingFinger extends Game{
 		MANAGER.load("sounds/drag.wav", Music.class);
 		MANAGER.load("sounds/destroy.wav", Music.class);
 		MANAGER.load("sounds/start.wav", Music.class);
+		MANAGER.load("sounds/moving_finger.ogg", Music.class);
 		
 		setScreen(LOADING);
 	}
@@ -121,11 +128,22 @@ public class MovingFinger extends Game{
 //		getCamera().setToOrtho(false, width, height);
 	}
 	
+	public void setS(Screen screen){
+		this.getScreen().dispose();
+		setScreen(screen);
+	}
+	
 	@Override
 	public void dispose(){
 		super.dispose();
 		MANAGER.dispose();
 		getSpriteBatch().dispose();
+		
+//		GAMEPLAY.dispose();
+//		GAMEOVER.dispose();
+//		LOADING.dispose();
+//		INTRO.dispose();
+//		MAIN.dispose();
 	}
 	
 }

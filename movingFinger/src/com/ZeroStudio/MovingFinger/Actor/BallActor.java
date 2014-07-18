@@ -2,16 +2,17 @@ package com.ZeroStudio.MovingFinger.Actor;
 
 
 import com.ZeroStudio.MovingFinger.MovingFinger;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /****************************************************************************
  * Esta Clase es la encargada de crear el personaje del cubito,				*
- * aplicarle los recortes necesarios, añadir el boalding box al personaje.	*
+ * aplicarle los recortes necesarios, aï¿½adir el boalding box al personaje.	*
  * **************************************************************************/
 
 public class BallActor extends Actor {
@@ -26,10 +27,10 @@ public class BallActor extends Actor {
 	/****** CONSTRUCTOR ******/
 	public BallActor() {
 		ballTexture = MovingFinger.MANAGER.get("ball.png", Texture.class);
-//		ballTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear); //Filtro para quitar Pixeliado
+		ballTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest); //Filtro para quitar Pixeliado
 		ball = new TextureRegion(ballTexture, 60, 60);
 		setSize(ball.getRegionWidth(), ball.getRegionHeight());
-//		setScale(1.5f);
+		setScale(1.12f);
 		setOrigin(this.getWidth()/2, this.getHeight()/2);
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight()); //crea el boalding box de la bola
 	}
@@ -65,7 +66,7 @@ public class BallActor extends Actor {
 		translate(velocidad.x * delta, velocidad.y * delta);
 		
 		// asocia el bolding box de la bola
-		// a su poscicion de origen y su tamaño
+		// a su poscicion de origen y su tamaï¿½o
 		bb.x=getX();
 		bb.y=getY();
 		bb.width=getWidth();

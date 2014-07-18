@@ -8,6 +8,7 @@ public class DragAndroidListener extends DragListener {
 	
 	//Variable de Asiganicon del Listener del Personaje
 	private Actor ball;
+	private int y = 76;
 
 	/*CONSTRUCTOR DEL LISTENER PARA EL PERSONAJE*/
 	public DragAndroidListener(Actor ball) {
@@ -17,12 +18,14 @@ public class DragAndroidListener extends DragListener {
 	@Override
 	public boolean touchDown(InputEvent event, float x, float y, int pointer,
 			int button) {
+		ball.setPosition(ball.getX(), this.y + ball.getHeight());
 		return true;
 	}
 
 	@Override
 	public void touchUp(InputEvent event, float x, float y, int pointer,
 			int button) {
+		ball.setPosition(ball.getX(), this.y);
 	}
 
 	@Override

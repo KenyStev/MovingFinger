@@ -3,13 +3,12 @@ package com.ZeroStudio.MovingFinger.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.ZeroStudio.MovingFinger.MovingFinger;
 import com.ZeroStudio.MovingFinger.Actor.BallActor;
-import com.ZeroStudio.MovingFinger.Actor.BallImage;
 import com.ZeroStudio.MovingFinger.Actor.NuveActor;
 import com.ZeroStudio.MovingFinger.Actor.PuntuacionActor;
 import com.ZeroStudio.MovingFinger.Actor.SkullActor;
+import com.ZeroStudio.MovingFinger.Actor.TimerActor;
 import com.ZeroStudio.MovingFinger.Listener.DragAndroidListener;
 import com.ZeroStudio.MovingFinger.Listener.InputDesktopListener;
 import com.ZeroStudio.MovingFinger.Listener.NuveListener;
@@ -41,8 +40,8 @@ public class GameplayScreen extends AbstractScreen {
 	private float timer;
 	private PuntuacionActor puntuacion;
 	private TextureRegion font_region;
-	private Music start, destroy;
-	
+	private Music start, destroy, pista;
+	TimerActor time;
 	private List<NuveActor> nuves;
 	private List<SkullActor> skulls, coins, incoins;
 //	BallImage bi;
@@ -69,7 +68,12 @@ public class GameplayScreen extends AbstractScreen {
 		// Creamos el sonidos de start y destroy
 		start = MovingFinger.MANAGER.get("sounds/start.wav", Music.class);
 		destroy = game.MANAGER.get("sounds/destroy.wav", Music.class);
-		start.play();
+//		start.play();
+		
+		// Creamos e inicializamos la pista del Juego
+		pista = MovingFinger.MANAGER.get("sounds/moving_finger.ogg", Music.class);
+		pista.setLooping(true);
+		pista.play();
 
 		// Crear Fondo
 		TextureRegion RegionFondo = new TextureRegion(MovingFinger.MANAGER.get(
@@ -84,7 +88,7 @@ public class GameplayScreen extends AbstractScreen {
 		ball.setPosition(stage.getWidth() / 2 - ball.getWidth() / 2, 76);
 		stage.setScrollFocus(ball);
 		ball.addListener(new DragAndroidListener(ball));
-		//le añadimos el boalding box a la bola (ball)
+		//le aï¿½adimos el boalding box a la bola (ball)
 		ball.bb.x = ball.getX();
 		ball.bb.y = ball.getY();
 		stage.addActor(ball);
@@ -102,6 +106,10 @@ public class GameplayScreen extends AbstractScreen {
 		puntuacion.setPuntuacion(0);
 		stage.addActor(puntuacion);
 
+//		time = new TimerActor(new BitmapFont());
+//		time.setPosition(15, stage.getHeight()-15);
+//		stage.addActor(time);
+		
 		// Inicializamos el contador de Tiempo
 		timer = 2 + (float) Math.random();
 	}
@@ -114,12 +122,26 @@ public class GameplayScreen extends AbstractScreen {
 		game.pref.putInteger("pts-temp", puntuacion.getPuntos());
 		game.pref.flush();
 		
+		pista.stop();
+
+		//porque se traba?
+		stage.clear();
+		skulls.clear();
+		coins.clear();
+		incoins.clear();
+		ball.remove();
+		puntuacion.remove();
+		
 		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override
 	public void dispose() {
 		stage.dispose();
+//		porque se traba?
+		destroy.dispose();
+		pista.dispose();
+		start.dispose();
 	}
 	
 	@Override
@@ -128,6 +150,7 @@ public class GameplayScreen extends AbstractScreen {
 		stage.setViewport(512, 700, true);
 		
 		puntuacion.setPosition(stage.getWidth()/2 - puntuacion.getWidth()/2, stage.getHeight()-100);
+//		time.setPosition(15, stage.getHeight()-15);
 	}
 
 
@@ -139,35 +162,8 @@ public class GameplayScreen extends AbstractScreen {
 	    
 		stage.act();
 		
-		timer -= delta;
-		if(timer<0){
-			crearSkull(5, 0,0,0);
-			
-			if(puntuacion.getPuntos()>=100){
-				crearSkull(-5, 0,0,0);
-				crearSkull(10, 0,0,0);
-				crearSkull(-10, 0,0,0);
-				crearSkull(-1, 0,0,0);
-			}else if(puntuacion.getPuntos()>=60){
-				crearSkull(-5, 0,0,0);
-				crearSkull(10, 0,0,0);
-				crearSkull(-10, 0,0,0);
-			}else if(puntuacion.getPuntos()>=40){
-				crearSkull(-5, 0,0,0);
-				crearSkull(10, 0,0,0);
-				crearSkull(-10, 0,0,0);//
-			}else if(puntuacion.getPuntos()>=20){
-				crearSkull(0, 0,0,0);
-				crearSkull(-5, 0,0,0);
-				crearSkull(5, 0,0,0);
-			}else if(puntuacion.getPuntos()>=0){
-				crearSkull(0, 0,0,0);
-				crearSkull(5, 0,0,0);
-				crearSkull(-5, 0,0,0);//
-			}
-			
-			timer = (float) (0.4 + (float)Math.random());
-		}
+		//verifica el tiempo para crear una nueva calabera
+		checkTime(delta);
 		
 		if(game.getCant()>0 && game.getInCoin()==1){
 			crearSkull(0, game.getInCoin(),(int) game.getNuvePos().x, (int) game.getNuvePos().y);
@@ -186,7 +182,43 @@ public class GameplayScreen extends AbstractScreen {
 		
 	}
 
-
+	private void checkTime(float delta) {
+		timer -= delta;
+		if(timer<0){
+			crearSkull(5, 0,0,0);
+			
+			if(puntuacion.getPuntos()>=100){
+				crearSkull(-5, 0,0,0);
+				crearSkull(10, 0,0,0);
+				crearSkull(-10, 0,0,0);
+				crearSkull(-1, 0,0,0);
+				crearSkull(5, 0,0,0);////
+			}else if(puntuacion.getPuntos()>=60){
+				crearSkull(-5, 0,0,0);
+				crearSkull(10, 0,0,0);
+				crearSkull(-10, 0,0,0);
+				crearSkull(5, 0,0,0);
+				crearSkull(15, 0,0,0);////
+			}else if(puntuacion.getPuntos()>=40){
+				crearSkull(-5, 0,0,0);
+				crearSkull(10, 0,0,0);
+				crearSkull(-10, 0,0,0);//
+				crearSkull(5, 0,0,0);////
+				crearSkull(15, 0,0,0);////
+			}else if(puntuacion.getPuntos()>=20){
+				crearSkull(0, 0,0,0);
+				crearSkull(-5, 0,0,0);
+				crearSkull(5, 0,0,0);
+				crearSkull(10, 0,0,0);////
+			}else if(puntuacion.getPuntos()>=0){
+				crearSkull(0, 0,0,0);
+				crearSkull(5, 0,0,0);
+				crearSkull(-5, 0,0,0);//
+			}
+			
+			timer = (float) (0.4 + (float)Math.random());
+		}
+	}
 
 	/**
 	 * Metodo para Disparar Crear Nuevas Calaberas
@@ -200,25 +232,27 @@ public class GameplayScreen extends AbstractScreen {
 	
 	private void crearSkull(int plusPos, int Select, int x, int y) {
 		SkullActor skull = new SkullActor(Select); // Crea nueva calabera
+		
+		skull.setScore(generateScore());
 
 		if (Select == 0) {
 
 			// Aumenta la dificultad segun la puntuacion que tiene
 			if (puntuacion.getPuntos() >= 100) {
-				skull.setVelocidad(-710);// 700
+				skull.setVelocidad(-750);// 700 , 710
 			} else if (puntuacion.getPuntos() >= 50) {
-				skull.setVelocidad(-650);// 650
+				skull.setVelocidad(-700);// 650 , 650
 			} else if (puntuacion.getPuntos() >= 20) {
-				skull.setVelocidad(-625);// 600
+				skull.setVelocidad(-650);// 600 , 625
 			} else if (puntuacion.getPuntos() >= 10) {
-				skull.setVelocidad(-600);// 575
+				skull.setVelocidad(-600);// 575 , 600
 			} else if (puntuacion.getPuntos() >= 0) {
 				skull.setVelocidad(-550);
 			}
 
 			if (plusPos != -1) {
 				skull.setPosition(
-						(float) (0f * stage.getWidth() + 1f * stage.getWidth()
+						(float) (0f * stage.getWidth() + 0.9f * stage.getWidth()
 								* (float) Math.random() + plusPos),
 						stage.getHeight());
 			} else {
@@ -252,6 +286,16 @@ public class GameplayScreen extends AbstractScreen {
 
 	}
 	
+	/**
+	 * genera un numero aleatorio entre 1 y 10
+	 * @return score ,score es un numero entre 1 y 10
+	 */
+	private int generateScore() {
+		int score = (int)((10 * Math.random()))+1;
+		return score;
+//		return (int)((10 * Math.random()))+1;
+	}
+
 	/**
 	 * Crea una Nueva nuve con las Caracteristicas necesarias y la asigna al esenario. 
 	 * */
@@ -308,6 +352,24 @@ public class GameplayScreen extends AbstractScreen {
 				puntuacion.plus();
 			}
 		}
+		
+		// Ciclo para Eliminar coins
+		for (int i = 0; i < coins.size(); i++) {
+			if (coins.get(i).getTop() < coins.get(i).getHeight() * -2) {
+				// Remover coins al salir de la pantalla
+				coins.get(i).remove();
+				coins.remove(i);
+			}
+		}
+
+		// Ciclo para Eliminar incoins
+		for (int i = 0; i < incoins.size(); i++) {
+			if (incoins.get(i).getTop() < incoins.get(i).getHeight() * -2) {
+				// Remover incoins al salir de la pantalla
+				incoins.get(i).remove();
+				incoins.remove(i);
+			}
+		}
 
 		// Ciclo para eliminar Nuves
 		for (int i = 0; i < nuves.size(); i++) {
@@ -334,7 +396,8 @@ public class GameplayScreen extends AbstractScreen {
 			if(skull.bb.overlaps(ball.bb)){
 				//Colision skull-ball
 				destroy.play();
-				game.positionsActor.set(ball.getX(),skull.getX(), skull.getY());
+				game.positionsActor.set(ball.getX(),ball.getY());
+				game.positionsActor2.set(skull.getX(), skull.getY());
 				game.score.setPuntuacion(puntuacion.getPuntos());
 				game.setScreen(game.GAMEOVER);
 				
@@ -352,7 +415,7 @@ public class GameplayScreen extends AbstractScreen {
 				//Colision coin-ball
 				coins.get(i).remove();
 				coins.remove(i);
-				puntuacion.setPuntuacion((int)(puntuacion.getPuntos()+5f));
+				puntuacion.setPuntuacion((int)(puntuacion.getPuntos()+coin.getScore()));
 			}
 		}
 		

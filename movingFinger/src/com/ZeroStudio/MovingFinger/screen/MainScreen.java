@@ -42,7 +42,7 @@ public class MainScreen extends AbstractScreen{
 		//Prueba de BackMenu
 		Texture text= new Texture(Gdx.files.internal("backMenuPrin.png"));
 		text.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion backMenu = new TextureRegion(text,377,295 );
+		TextureRegion backMenu = new TextureRegion(text,423,428 );
 		backMenu1 = new Image(backMenu);
 		backMenu1.setPosition(stage.getWidth()/2 - backMenu1.getWidth()/2, stage.getHeight()/2 - (backMenu1.getHeight()-76)/2);
 		stage.addActor(backMenu1);
@@ -55,21 +55,23 @@ public class MainScreen extends AbstractScreen{
 		stage.addActor(hi_score);
 		
 		play = new ButtonsActor(0);
-		play.setPosition(stage.getWidth()/2 + play.getWidth()*0.1f, stage.getHeight()/2 - play.getHeight()/2);
+		play.setPosition(stage.getWidth()/2 + play.getWidth()*0.1f, stage.getHeight()/2 - play.getHeight());
 		play.addListener(new ButtonsListener(play, 1, game));
 		stage.addActor(play);
 		
 		exit = new ButtonsActor(2);
-		exit.setPosition(stage.getWidth()/2 - exit.getWidth()*1.1f, stage.getHeight()/2 - play.getHeight()/2);
+		exit.setPosition(stage.getWidth()/2 - exit.getWidth()*1.1f, stage.getHeight()/2 - play.getHeight());
 		exit.addListener(new ButtonsListener(exit, 3, game));
 		stage.addActor(exit);
 		
 		Texture Name = new Texture(Gdx.files.internal("MovingFinger.png"));
+//		TextureRegion Logo = new TextureRegion(Name, 300, 120);
 		Image NameGame = new Image(Name);
-		NameGame.setOrigin(NameGame.getWidth()/2, NameGame.getHeight()/2);
-		NameGame.setScale(1.5f);
-		NameGame.setPosition(stage.getWidth()/2 - NameGame.getWidth()/2, (float) (stage.getHeight() - NameGame.getHeight()*1.2));
-		stage.addActor(NameGame);
+//		NameGame.setOrigin(NameGame.getWidth()/2, NameGame.getHeight()/2);
+//		NameGame.setScale(1.3f);
+//		NameGame.setPosition(stage.getWidth()/2 - NameGame.getWidth()/2, (float) (stage.getHeight() - NameGame.getHeight()*2.2));
+		NameGame.setPosition(stage.getWidth()/2 - NameGame.getWidth()/2, 50);
+//		stage.addActor(NameGame);
 		
 		game.maxima.setPosition(hi_score.getX() + hi_score.getWidth()/3, hi_score.getY() + hi_score.getHeight()/2);
 		stage.addActor(game.maxima);
@@ -84,6 +86,7 @@ public class MainScreen extends AbstractScreen{
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
+		stage.clear();
 	}
 
 	@Override

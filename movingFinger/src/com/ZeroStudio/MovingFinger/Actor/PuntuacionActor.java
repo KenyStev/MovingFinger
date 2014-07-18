@@ -24,10 +24,12 @@ public class PuntuacionActor extends Actor {
 		this.font=font;
 		this.font.setColor(1f, 0.4f, 0f, 1f);
 		font.setScale(1.5f);
+		score.setVolume(0.2f);
 	}
 	
 	public void setPuntuacion(int puntos){
 		puntuacion = puntos;
+		score.play();
 	}
 	
 	public void plus(){
@@ -45,7 +47,7 @@ public class PuntuacionActor extends Actor {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha){
-		font.draw(batch, Integer.toString(puntuacion), getX(), getY());
+		font.draw(batch, Integer.toString(getPuntos()), getX(), getY());
 	}
 
 }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -23,6 +25,7 @@ public class MainScreen extends AbstractScreen{
 	private Texture titulo;
 	private Image imgFondo, hi_score, backMenu1;
 	private ButtonsActor play, exit;
+	private Image select;
 	/**********************************************/
 
 	/****************CONSTRUCTOR****************/
@@ -72,6 +75,27 @@ public class MainScreen extends AbstractScreen{
 //		NameGame.setPosition(stage.getWidth()/2 - NameGame.getWidth()/2, (float) (stage.getHeight() - NameGame.getHeight()*2.2));
 		NameGame.setPosition(stage.getWidth()/2 - NameGame.getWidth()/2, 50);
 //		stage.addActor(NameGame);
+		
+		//Click temporal
+		select = new Image(new TextureRegion(MovingFinger.MANAGER.get("ball"+MovingFinger.CHARACTER+".png", Texture.class), 60,60));
+		select.setPosition(stage.getWidth()/2 - select.getWidth()/2, 76);
+		select.addListener(new InputListener(){
+			@Override
+			public void touchUp(InputEvent event, float x, float y,
+					int pointer, int button) {
+				super.touchUp(event, x, y, pointer, button);
+				game.setScreen(new SelectCharacterScreen(game));
+			}
+			
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				select.setColor(1, 1, 1, .5f);
+				return true;
+			}
+		});
+		stage.addActor(select);
+		//fin del temporal click
 		
 		game.maxima.setPosition(hi_score.getX() + hi_score.getWidth()/3, hi_score.getY() + hi_score.getHeight()/2);
 		stage.addActor(game.maxima);

@@ -26,7 +26,7 @@ public class BallActor extends Actor {
 
 	/****** CONSTRUCTOR ******/
 	public BallActor() {
-		ballTexture = MovingFinger.MANAGER.get("ball.png", Texture.class);
+		ballTexture = MovingFinger.MANAGER.get("ball"+MovingFinger.CHARACTER+".png", Texture.class);
 		ballTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest); //Filtro para quitar Pixeliado
 		ball = new TextureRegion(ballTexture, 60, 60);
 		setSize(ball.getRegionWidth(), ball.getRegionHeight());

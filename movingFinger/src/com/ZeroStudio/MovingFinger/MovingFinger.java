@@ -32,6 +32,7 @@ public class MovingFinger extends Game{
 	public Vector2 positionsActor= new Vector2();
 	public Vector2 positionsActor2= new Vector2();
 	public ScoreActor score;
+	public static int CHARACTER=0;
 	
 	private Vector2 nuvePos= new Vector2();
 	private int cant=0, type=0;
@@ -65,7 +66,11 @@ public class MovingFinger extends Game{
 		MANAGER.load("RosalilaStudio.png", Texture.class);
 		MANAGER.load("John.png", Texture.class);
 		MANAGER.load("gameover.png", Texture.class);
-		MANAGER.load("ball.png", Texture.class);
+		MANAGER.load("ball0.png", Texture.class);
+		MANAGER.load("ball1.png", Texture.class);
+		MANAGER.load("ball2.png", Texture.class);
+		MANAGER.load("ball3.png", Texture.class);
+		MANAGER.load("ball4.png", Texture.class);
 		MANAGER.load("skulls.png", Texture.class);
 		MANAGER.load("nuve.png", Texture.class);
 		MANAGER.load("fondo.png", Texture.class);

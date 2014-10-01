@@ -92,7 +92,8 @@ public class GameplayScreen extends AbstractScreen {
 		ball.bb.x = ball.getX();
 		ball.bb.y = ball.getY();
 		stage.addActor(ball);
-
+		
+		// Creamos la primer nuve para inicializar la lista de nuves
 		createNuve();
 
 		// Inicializamos Puntuacion
@@ -178,6 +179,8 @@ public class GameplayScreen extends AbstractScreen {
 		checkLists();
 		checkColisiones();
 		
+		puntuacion.toFront();
+		
 		stage.draw();
 		
 	}
@@ -204,16 +207,16 @@ public class GameplayScreen extends AbstractScreen {
 				crearSkull(10, 0,0,0);
 				crearSkull(-10, 0,0,0);//
 				crearSkull(5, 0,0,0);////
-				crearSkull(15, 0,0,0);////
+//				crearSkull(15, 0,0,0);////
 			}else if(puntuacion.getPuntos()>=20){
 				crearSkull(0, 0,0,0);
 				crearSkull(-5, 0,0,0);
 				crearSkull(5, 0,0,0);
-				crearSkull(10, 0,0,0);////
+//				crearSkull(10, 0,0,0);////
 			}else if(puntuacion.getPuntos()>=0){
 				crearSkull(0, 0,0,0);
 				crearSkull(5, 0,0,0);
-				crearSkull(-5, 0,0,0);//
+//				crearSkull(-5, 0,0,0);//
 			}
 			
 			timer = (float) (0.4 + (float)Math.random());
@@ -221,15 +224,18 @@ public class GameplayScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Metodo para Disparar Crear Nuevas Calaberas
-	 * Crea una Nueva Calabera en una posicion aleatoria del eje Y
-	 * y segun 'select' define si es un define si es un 'coin', 'incoin' o un 'skull'
-	 * y lo agrega a la lista correspondiente, siendo:
-	 * 0 = skull; List(skulls);
-	 * 1 = coin; List(coins);
-	 * 2 = incoin; List(incoins);
+	 * Metodo para Disparar Crear Nuevas Calaberas <br>
+	 * Crea una Nueva Calabera en una posicion aleatoria del eje Y <br>
+	 * y segun 'select' define si es un define si es un 'coin', 'incoin' o un 'skull' <br>
+	 * y lo agrega a la lista correspondiente, siendo: <br>
+	 * 0 = skull; List(skulls); <br>
+	 * 1 = coin; List(coins); <br>
+	 * 2 = incoin; List(incoins); <br>
+	 * @param plusPos se le suma a la posicion que se genera random <br>
+	 * @param Select para seleccionar el tipo de skull que se desea crear <br>
+	 * @param x en case de ser una skull de coin o incoin pide la posicion en <b>x</b>
+	 * @param y en case de ser una skull de coin o incoin pide la posicion en <b>y</b>
 	 * */
-	
 	private void crearSkull(int plusPos, int Select, int x, int y) {
 		SkullActor skull = new SkullActor(Select); // Crea nueva calabera
 		

@@ -13,6 +13,6 @@ public class Main {
 		cfg.height = 640;
 		cfg.resizable = false;
 		
-		new LwjglApplication(new MovingFinger(), cfg);
+		new LwjglApplication(new MovingFinger(new AndriodFunctionAdsDesktop()), cfg);
 	}
 }

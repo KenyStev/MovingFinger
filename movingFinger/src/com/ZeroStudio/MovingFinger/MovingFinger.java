@@ -20,8 +20,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
+/****************************************************************************************
+ * Esta es la Clase principal del Juego </br>											*
+ * aqui se cargan todos los assets necesarios para el juego, y se mandan a llamar</br>	*
+ * la primer pantalla para empezar el Juego.											*
+ * @author Kevin Javier Estevez (Keny Stev)												*
+ * @author Zero Studio																	*
+ * @coWork Rosalila Studio																*
+ * @authorGrafico John Mackay de Rosalila Studio										*
+ * @version 1.1																			*
+ * @datePublic 2/Oct/2014																*
+ ****************************************************************************************/
 public class MovingFinger extends Game{
 	
 	public static AssetManager MANAGER;
@@ -37,20 +47,25 @@ public class MovingFinger extends Game{
 	private Vector2 nuvePos= new Vector2();
 	private int cant=0, type=0;
 	
+	public FunctionAds funcion;
+	
 //	private OrthographicCamera camera; //change new camera
 
 	
-	public MovingFinger(){
+	public MovingFinger(FunctionAds funcion){
 		//instancia las cinco pantallas
 		GAMEPLAY = new GameplayScreen(this);
 		GAMEOVER = new GameOverScreen(this);
 		LOADING = new LoadingScreen(this);
 		MAIN = new MainScreen(this);
 		INTRO = new IntroScreen(this);
+		this.funcion=funcion;
 	}
 
 	@Override
 	public void create() {
+		funcion.prueba();
+		
 		sb = new SpriteBatch();
 //		camera = new OrthographicCamera(); //change
 		

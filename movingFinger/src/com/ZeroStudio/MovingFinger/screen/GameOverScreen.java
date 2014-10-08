@@ -35,6 +35,7 @@ public class GameOverScreen extends AbstractScreen{
 
 	@Override
 	public void show() {
+		game.funcion.prueba();
 		
 		stage = new Stage(512, 700, true, game.getSpriteBatch());
 		Gdx.input.setInputProcessor(stage);

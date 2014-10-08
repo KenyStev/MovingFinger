@@ -31,6 +31,8 @@ import com.badlogic.gdx.math.Vector2;
  * @authorGrafico John Mackay de Rosalila Studio										*
  * @version 1.1																			*
  * @datePublic 2/Oct/2014																*
+ * Este proyecto esta publicado bajo GPL, con sus cuarto libertades permitidas,			*
+ * Respetendo lo descrito por la Free Software Fundation								*
  ****************************************************************************************/
 public class MovingFinger extends Game{
 	

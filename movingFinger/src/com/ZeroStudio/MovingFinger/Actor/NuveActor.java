@@ -26,8 +26,8 @@ public class NuveActor extends Image {
 		this.type=type;
 		nuveText = MovingFinger.MANAGER.get("nuve.png", Texture.class); //toma la Textura
 		Nuve = new TextureRegion(nuveText, 160, 96); //recorta la Textura
-		setSize(Nuve.getRegionWidth(), Nuve.getRegionHeight()); //toma el tamaño del Recorte
-
+		setSize(Nuve.getRegionWidth(), Nuve.getRegionHeight()); //toma el tamaï¿½o del Recorte
+		
 	}
 
 	@Override

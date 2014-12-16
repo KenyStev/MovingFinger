@@ -68,6 +68,7 @@ public class SelectCharacterScreen extends AbstractScreen {
 	
 	/**
 	 * Inicializa el arreglo de los Personajes
+	 * @author Keny J. Stev
 	 */
 	private void inicialiceCharacter() {
 		for (int i = 0; i < characters.length; i++) {

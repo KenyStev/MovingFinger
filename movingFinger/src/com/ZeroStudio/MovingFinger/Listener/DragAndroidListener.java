@@ -30,8 +30,8 @@ public class DragAndroidListener extends DragListener {
 
 	@Override
 	public void touchDragged(InputEvent event, float x, float y, int pointer) {
-		// ball.translate(x - ball.getWidth()/2, y - ball.getHeight()/2);
-		// //Mover a todos lados
+		//Mover a todos lados
+//		ball.translate(x - ball.getWidth()/2, y - ball.getHeight()/2);
 		ball.translate(x - ball.getWidth() / 2, 0); // Mover solo eje x
 
 	}

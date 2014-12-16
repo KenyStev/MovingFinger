@@ -45,6 +45,7 @@ public class MovingFinger extends Game{
 	public Vector2 positionsActor2= new Vector2();
 	public ScoreActor score;
 	public static int CHARACTER=0;
+	public boolean thereAre=false;
 	
 	private Vector2 nuvePos= new Vector2();
 	private int cant=0, type=0;

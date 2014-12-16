@@ -1,6 +1,7 @@
 package com.ZeroStudio.MovingFinger.screen;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.ZeroStudio.MovingFinger.MovingFinger;
@@ -38,13 +39,16 @@ public class GameplayScreen extends AbstractScreen {
 	private Stage stage;
 	private BallActor ball;
 	private float timer;
+	private int velocity,cant;
 	private PuntuacionActor puntuacion;
 	private TextureRegion font_region;
 	private Music start, destroy, pista;
 	TimerActor time;
-	private List<NuveActor> nuves;
-	private List<SkullActor> skulls, coins, incoins;
+	private LinkedList<NuveActor> nuves;	// Changed List to LinkedList
+	private LinkedList<SkullActor> skulls, coins, incoins;	// Changed List to LinkedList
 //	BallImage bi;
+	
+	private final int SKULL=0, COIN=1, INCOIN=2;
 	/**********************************************/
 	
 	
@@ -56,10 +60,10 @@ public class GameplayScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		//Inicializamos nuestras Listas enlazadas
-		skulls = new ArrayList<SkullActor>();
-		coins = new ArrayList<SkullActor>();
-		incoins = new ArrayList<SkullActor>();
-		nuves = new ArrayList<NuveActor>();
+		skulls = new LinkedList<SkullActor>();	// Changed ArrayList to LinkedList
+		coins = new LinkedList<SkullActor>();	// Changed ArrayList to LinkedList
+		incoins = new LinkedList<SkullActor>();	// Changed ArrayList to LinkedList
+		nuves = new LinkedList<NuveActor>();	// Changed ArrayList to LinkedList
 
 		// Creamos un nuevo esenario y lo asociamos a la entrada
 		stage = new Stage(512, 700, true, game.getSpriteBatch());
@@ -162,17 +166,24 @@ public class GameplayScreen extends AbstractScreen {
 		Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	    
 		stage.act();
+		int points = puntuacion.getPuntos();
+		
+		if(points<=200)
+			velocity = -(550 + 50 * (points/20));
+		
+		if(points<=60)
+			cant = 3 + (points/30);
 		
 		//verifica el tiempo para crear una nueva calabera
 		checkTime(delta);
 		
-		if(game.getCant()>0 && game.getInCoin()==1){
-			crearSkull(0, game.getInCoin(),(int) game.getNuvePos().x, (int) game.getNuvePos().y);
+		if(game.getCant()>0 && game.getInCoin()==COIN){
+			crearSkull(COIN,(int) game.getNuvePos().x, (int) game.getNuvePos().y);
 			game.setCant(0);
 		}
 		
-		if(game.getCant()>0 && game.getInCoin()==2){
-			crearSkull(0, game.getInCoin(),(int) game.getNuvePos().x, (int) game.getNuvePos().y);
+		if(game.getCant()>0 && game.getInCoin()==INCOIN){
+			crearSkull(INCOIN,(int) game.getNuvePos().x, (int) game.getNuvePos().y);
 			game.setCant(0);
 		}
 		
@@ -188,37 +199,7 @@ public class GameplayScreen extends AbstractScreen {
 	private void checkTime(float delta) {
 		timer -= delta;
 		if(timer<0){
-			crearSkull(5, 0,0,0);
-			
-			if(puntuacion.getPuntos()>=100){
-				crearSkull(-5, 0,0,0);
-				crearSkull(10, 0,0,0);
-				crearSkull(-10, 0,0,0);
-				crearSkull(-1, 0,0,0);
-				crearSkull(5, 0,0,0);////
-			}else if(puntuacion.getPuntos()>=60){
-				crearSkull(-5, 0,0,0);
-				crearSkull(10, 0,0,0);
-				crearSkull(-10, 0,0,0);
-				crearSkull(5, 0,0,0);
-				crearSkull(15, 0,0,0);////
-			}else if(puntuacion.getPuntos()>=40){
-				crearSkull(-5, 0,0,0);
-				crearSkull(10, 0,0,0);
-				crearSkull(-10, 0,0,0);//
-				crearSkull(5, 0,0,0);////
-//				crearSkull(15, 0,0,0);////
-			}else if(puntuacion.getPuntos()>=20){
-				crearSkull(0, 0,0,0);
-				crearSkull(-5, 0,0,0);
-				crearSkull(5, 0,0,0);
-//				crearSkull(10, 0,0,0);////
-			}else if(puntuacion.getPuntos()>=0){
-				crearSkull(0, 0,0,0);
-				crearSkull(5, 0,0,0);
-//				crearSkull(-5, 0,0,0);//
-			}
-			
+			someSkull(cant);
 			timer = (float) (0.4 + (float)Math.random());
 		}
 	}
@@ -235,26 +216,15 @@ public class GameplayScreen extends AbstractScreen {
 	 * @param Select para seleccionar el tipo de skull que se desea crear <br>
 	 * @param x en case de ser una skull de coin o incoin pide la posicion en <b>x</b>
 	 * @param y en case de ser una skull de coin o incoin pide la posicion en <b>y</b>
+	 * @author Kenshi Zhekaru
 	 * */
 	private void crearSkull(int plusPos, int Select, int x, int y) {
 		SkullActor skull = new SkullActor(Select); // Crea nueva calabera
 		
-		skull.setScore(generateScore());
-
 		if (Select == 0) {
 
 			// Aumenta la dificultad segun la puntuacion que tiene
-			if (puntuacion.getPuntos() >= 100) {
-				skull.setVelocidad(-750);// 700 , 710
-			} else if (puntuacion.getPuntos() >= 50) {
-				skull.setVelocidad(-700);// 650 , 650
-			} else if (puntuacion.getPuntos() >= 20) {
-				skull.setVelocidad(-650);// 600 , 625
-			} else if (puntuacion.getPuntos() >= 10) {
-				skull.setVelocidad(-600);// 575 , 600
-			} else if (puntuacion.getPuntos() >= 0) {
-				skull.setVelocidad(-550);
-			}
+			skull.setVelocidad(velocity);
 
 			if (plusPos != -1) {
 				skull.setPosition(
@@ -265,13 +235,9 @@ public class GameplayScreen extends AbstractScreen {
 				skull.setPosition((float) ball.getX(), stage.getHeight());
 			}
 		} else {
-			switch (Select) {
-			case 1:
-			case 2:
-				skull.setVelocidad(-250);
-				skull.setPosition(x, y);
-				break;
-			}
+			skull.setScore(generateScore());
+			skull.setVelocidad(-250);
+			skull.setPosition(x, y);
 		}
 
 		skull.bb.x = skull.getX();
@@ -279,10 +245,10 @@ public class GameplayScreen extends AbstractScreen {
 		stage.addActor(skull);
 		
 		switch (Select) {
-		case 1:
+		case COIN:
 			coins.add(skull);
 			break;
-		case 2:
+		case INCOIN:
 			incoins.add(skull);
 			break;
 		default:
@@ -290,6 +256,21 @@ public class GameplayScreen extends AbstractScreen {
 			break;
 		}
 
+	}
+	
+	private void crearSkull(int plusPos, int Select){
+		crearSkull(plusPos, Select, 0, 0);
+	}
+	
+	private void crearSkull(int Select, int x, int y){
+		crearSkull(0, Select, x, y);
+		game.thereAre=true;
+	}
+	
+	private void someSkull(int cant){
+		int ch=5;
+		for(int i=0;i<cant;i++)
+		crearSkull((i%3==0)?ch:(i%2==0)?-ch:0, SKULL);
 	}
 	
 	/**
@@ -303,7 +284,8 @@ public class GameplayScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Crea una Nueva nuve con las Caracteristicas necesarias y la asigna al esenario. 
+	 * Crea una Nueva nuve con las Caracteristicas necesarias y la asigna al esenario.
+	 * @author Kenshi Zhekaru 
 	 * */
 	private void createNuve(){
 		NuveActor nuve;
@@ -350,6 +332,7 @@ public class GameplayScreen extends AbstractScreen {
 	 * */
 	private void checkLists() {
 		// Ciclo para Eliminar Calaberas
+		System.out.println("Size del Skulls: "+skulls.size());
 		for (int i = 0; i < skulls.size(); i++) {
 			if (skulls.get(i).getTop() < skulls.get(i).getHeight() * -2) {
 				// Remover calabera al salir de la pantalla
@@ -410,33 +393,37 @@ public class GameplayScreen extends AbstractScreen {
 			}
 		}
 		
-		/**
-		 * Comprueba si existe una colicion entre un coin y la ball
-		 * si la hay, entonces aumenta 10% de la puntuacion actual
-		 * y luego remueve el coin.
-		 * */
-		for(int i=0; i < coins.size(); i++){
-			coin = coins.get(i);
-			if(coin.bb.overlaps(ball.bb)){
-				//Colision coin-ball
-				coins.get(i).remove();
-				coins.remove(i);
-				puntuacion.setPuntuacion((int)(puntuacion.getPuntos()+coin.getScore()));
+		if(game.thereAre){
+			/**
+			 * Comprueba si existe una colicion entre un coin y la ball
+			 * si la hay, entonces aumenta 10% de la puntuacion actual
+			 * y luego remueve el coin.
+			 * */
+			for(int i=0; i < coins.size(); i++){
+				coin = coins.get(i);
+				if(coin.bb.overlaps(ball.bb)){
+					//Colision coin-ball
+					coins.get(i).remove();
+					coins.remove(i);
+					puntuacion.setPuntuacion((int)(puntuacion.getPuntos()+coin.getScore()));
+				}
 			}
-		}
 		
-		/**
-		 * Comprueba si existe una colicion entre un incoin y la ball
-		 * si la hay, entonces disminulle 10% de la puntuacion actual;
-		 * y luego remueve el incoin.
-		 * */
-		for(int i=0; i < incoins.size(); i++){
-			coin = incoins.get(i);
-			if(coin.bb.overlaps(ball.bb)){
-				//Colision incoin-ball
-				incoins.get(i).remove();
-				incoins.remove(i);
-				puntuacion.setPuntuacion((int)(puntuacion.getPuntos() - (int)(puntuacion.getPuntos()*0.2f)));
+			/**
+			 * Comprueba si existe una colicion entre un incoin y la ball si la
+			 * hay, entonces disminulle 10% de la puntuacion actual; y luego
+			 * remueve el incoin.
+			 * */
+			for (int i = 0; i < incoins.size(); i++) {
+				coin = incoins.get(i);
+				if (coin.bb.overlaps(ball.bb)) {
+					// Colision incoin-ball
+					incoins.get(i).remove();
+					incoins.remove(i);
+					puntuacion
+							.setPuntuacion((int) (puntuacion.getPuntos() - (int) (puntuacion
+									.getPuntos() * 0.2f)));
+				}
 			}
 		}
 	}

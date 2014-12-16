@@ -2,6 +2,7 @@ package com.ZeroStudio.MovingFinger.screen;
 
 
 import com.ZeroStudio.MovingFinger.MovingFinger;
+import static com.ZeroStudio.MovingFinger.AnimationControl.*;
 import com.ZeroStudio.MovingFinger.Actor.ButtonsActor;
 import com.ZeroStudio.MovingFinger.Listener.ButtonsListener;
 import com.badlogic.gdx.Gdx;
@@ -42,12 +43,16 @@ public class MainScreen extends AbstractScreen{
 		imgFondo = new Image(titulo);
 		stage.addActor(imgFondo);
 		
+		velocidad=-500;
+		UP=false;
+		DOWN=true;
+		
 		//Prueba de BackMenu
 		Texture text= new Texture(Gdx.files.internal("backMenuPrin.png"));
 		text.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion backMenu = new TextureRegion(text,423,428 );
 		backMenu1 = new Image(backMenu);
-		backMenu1.setPosition(stage.getWidth()/2 - backMenu1.getWidth()/2, stage.getHeight()/2 - (backMenu1.getHeight()-76)/2);
+		backMenu1.setPosition(stage.getWidth()/2 - backMenu1.getWidth()/2, stage.getHeight()/2 - (backMenu1.getHeight()-76)/2 + stage.getHeight());
 		stage.addActor(backMenu1);
 		
 		Texture scoretxt= new Texture(Gdx.files.internal("hiscore.png"));
@@ -58,12 +63,12 @@ public class MainScreen extends AbstractScreen{
 		stage.addActor(hi_score);
 		
 		play = new ButtonsActor(0);
-		play.setPosition(stage.getWidth()/2 + play.getWidth()*0.1f, stage.getHeight()/2 - play.getHeight());
+		play.setPosition(stage.getWidth()/2 + play.getWidth()*0.1f, stage.getHeight()/2 - play.getHeight() + stage.getHeight());
 		play.addListener(new ButtonsListener(play, 1, game));
 		stage.addActor(play);
 		
 		exit = new ButtonsActor(2);
-		exit.setPosition(stage.getWidth()/2 - exit.getWidth()*1.1f, stage.getHeight()/2 - play.getHeight());
+		exit.setPosition(stage.getWidth()/2 - exit.getWidth()*1.1f, stage.getHeight()/2 - play.getHeight() + stage.getHeight());
 		exit.addListener(new ButtonsListener(exit, 3, game));
 		stage.addActor(exit);
 		
@@ -104,6 +109,8 @@ public class MainScreen extends AbstractScreen{
 	@Override
 	public void render(float delta) {
 		stage.act();
+		upLabel();
+		downLabel();
 		stage.draw();
 	}
 
@@ -116,6 +123,40 @@ public class MainScreen extends AbstractScreen{
 	@Override
 	public void dispose() {
 		stage.dispose();
+	}
+	
+	private void upLabel(){
+		if(UP){
+			acelerar();
+			exch();
+			if(hi_score.getY()>stage.getHeight()){
+				UP=false;
+				velocidad=500;
+				aceleracion=0;
+				game.setS(game.GAMEPLAY);
+			}
+		}
+	}
+	
+	private void downLabel(){
+		if(DOWN){
+			marchaAtras();
+			exch();
+			if(backMenu1.getY()<stage.getHeight()/2 - backMenu1.getHeight()/3){
+				DOWN=false;
+				velocidad=500;
+				aceleracion=0;
+			}
+		}
+	}
+	
+	private void exch(){
+		float pos = actualizarPosicion();
+		backMenu1.setY(backMenu1.getY()+pos);
+		exit.setY(exit.getY()+pos);
+		play.setY(play.getY()+pos);
+		hi_score.setY(hi_score.getY()+pos);
+		game.maxima.setY(game.maxima.getY()+pos);
 	}
 
 	@Override

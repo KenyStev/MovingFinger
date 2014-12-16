@@ -1,6 +1,7 @@
 package com.ZeroStudio.MovingFinger.screen;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.ZeroStudio.MovingFinger.IntroAnimation;
@@ -22,7 +23,10 @@ public class IntroScreen extends AbstractScreen {
 	private BallActor ball;
 	private float timer;
 	
-	private List<SkullActor> skulls;
+	private LinkedList<SkullActor> skulls;
+	
+	//Hilo
+	Hilo hilo = new Hilo();
 
 	public IntroScreen(MovingFinger game) {
 		super(game);
@@ -35,7 +39,7 @@ public class IntroScreen extends AbstractScreen {
 		stage = new Stage(512, 700, true, game.getSpriteBatch());
 		Gdx.input.setInputProcessor(stage);
 		
-		skulls = new ArrayList<SkullActor>();
+		skulls = new LinkedList<SkullActor>();
 		
 		// Crear Fondo
 		TextureRegion RegionFondo = new TextureRegion(MovingFinger.MANAGER.get(
@@ -113,13 +117,8 @@ public class IntroScreen extends AbstractScreen {
 				}
 			}
 		} else {
-			switch (Select) {
-			case 1:
-			case 2:
-				skull.setVelocidad(-250);
-				skull.setPosition(x, y);
-				break;
-			}
+			skull.setVelocidad(-250);
+			skull.setPosition(x, y);
 		}
 
 		skull.bb.x = skull.getX();
@@ -157,20 +156,24 @@ public class IntroScreen extends AbstractScreen {
 		}
 	}
 	
-	private void moveBall() {
+	private void moveBall(){
 		SkullActor skull;
 		for(int i=0; i < skulls.size(); i++){
 			skull = skulls.get(i);
 			float xS = skull.getX() + skull.getWidth()/2;
 			float xB = ball.getX() + ball.getWidth()/2;
 			
-			if (skull.getY() < stage.getHeight() / 2) {
+			if (skull.getY() < stage.getHeight() - (stage.getHeight() / 3)) {
 				if (xS > ball.getX() && xS < ball.getRight() && xS > xB) {
 //				 ball.velocidad.x=-550;
-					ball.setPosition(xS - ball.getWidth() * 1.5f, ball.getY());// Bueno!
+					//ball.setPosition(xS - ball.getWidth() * 1.5f, ball.getY());// Bueno!
+//					move(ball, (ball.getWidth() + skull.getWidth()/3), 0);
+					hilo.run(ball, (ball.getWidth() + skull.getWidth()), 0);
 				} else if (xS < ball.getRight() && xS > ball.getX() && xS < xB) {
 //				 ball.velocidad.x=550;
-					ball.setPosition(xS + ball.getWidth(), ball.getY());// Bueno!
+					//ball.setPosition(xS + ball.getWidth(), ball.getY());// Bueno!
+//					move(ball, (ball.getWidth() + skull.getWidth()/3), 1);
+					hilo.run(ball, (ball.getWidth() + skull.getWidth()), 1);
 				} else if(skull.getX() > ball.getRight() || skull.getRight() < ball.getX()){
 //					ball.velocidad.x = 0;
 				}
@@ -179,8 +182,23 @@ public class IntroScreen extends AbstractScreen {
 		}
 	}
 	
+//	private void move(float toMove, int lado){
+//		
+//		if(toMove>=0){
+//			if(lado==0){
+//				ball.setX(ball.getX()-1);
+//				move(toMove-1, lado);
+//			}else if(lado==1){
+//				ball.setX(ball.getX()+1);
+//				move(toMove-1, lado);
+//			}
+//		}else{
+//			return;
+//		}
+//	}
+	
 	private void checkColisiones() {
-		SkullActor skull, coin;
+		SkullActor skull;
 		for(int i=0; i < skulls.size(); i++){
 			skull = skulls.get(i);
 			if(skull.bb.overlaps(ball.bb)){
@@ -188,6 +206,38 @@ public class IntroScreen extends AbstractScreen {
 				game.setScreen(game.INTRO);
 				
 			}
+		}
+	}
+}
+
+class Hilo extends Thread{
+	
+	BallActor ball;
+	
+	public void run(BallActor ball, float toMove, int lado) {
+		super.run();
+		this.ball = ball;
+		move(toMove, lado);
+	}
+	private void move(float toMove, int lado){
+		
+//		toMove*=2;
+		
+		if(toMove>=0){
+			if(lado==0){
+				System.out.println("Moviendose Izquierda");
+				//for (int i = (int)toMove; i>=0; i--)
+				ball.setX(ball.getX()-1);
+				move((toMove-1), lado);
+			}else if(lado==1){
+				System.out.println("Moviendose Derecha");
+				//for (int i = (int)toMove; i>=0; i--)
+				ball.setX(ball.getX()+1);
+				move((toMove-1), lado);
+			}
+//			toMove--;
+		}else{
+			return;
 		}
 	}
 }

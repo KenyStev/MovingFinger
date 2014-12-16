@@ -2,7 +2,9 @@ package com.ZeroStudio.MovingFinger.Listener;
 
 
 import com.ZeroStudio.MovingFinger.MovingFinger;
+import static com.ZeroStudio.MovingFinger.AnimationControl.*;
 import com.ZeroStudio.MovingFinger.screen.GameplayScreen;
+import com.ZeroStudio.MovingFinger.screen.MainScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -34,35 +36,11 @@ public class ButtonsListener extends InputListener {
 			int button) {
 		this.button.setColor(1f, 1f, 1f, 1f);
 		switch(this.screen){
-		case 1: game.setScreen(game.GAMEPLAY); break;
+		case 1: UP=true; /*game.setScreen(game.GAMEPLAY);*/ break;
 		case 2: game.setScreen(game.MAIN); break;
 		case 3: Gdx.app.exit(); break;
 		}
 		
 		super.touchUp(event, x, y, pointer, button);
-	}
-	
-	private void delayExit() {
-		float delay = 0.1f; // seconds
-
-		Timer.schedule(new Task() {
-			@Override
-			public void run() {
-				// Do your work
-				Gdx.app.exit();
-			}
-		}, delay);
-	}
-
-	private void delayDispose() {
-		float delay = 0.5f; // seconds
-
-		Timer.schedule(new Task() {
-			@Override
-			public void run() {
-				// Do your work
-				game.dispose();
-			}
-		}, delay);
 	}
 }

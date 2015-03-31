@@ -34,7 +34,7 @@ public class SelectCharacterScreen extends AbstractScreen {
 		
 		back = new ButtonsActor(2);
 		stage.addActor(back);
-		back.addListener(new ButtonsListener(back, 2, game));
+		back.addListener(new ButtonsListener(back, 4, game));
 		back.setPosition(50, 50);
 		
 	}

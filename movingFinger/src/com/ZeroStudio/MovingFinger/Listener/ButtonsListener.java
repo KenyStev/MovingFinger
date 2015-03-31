@@ -36,8 +36,9 @@ public class ButtonsListener extends InputListener {
 			int button) {
 		this.button.setColor(1f, 1f, 1f, 1f);
 		switch(this.screen){
-		case 1: UP=true; /*game.setScreen(game.GAMEPLAY);*/ break;
-		case 2: game.setScreen(game.MAIN); break;
+		case 1: UP=true; screenSelect=1; /*game.setScreen(game.GAMEPLAY);*/ break;
+		case 2: UP=true; screenSelect=2; break;
+		case 4: game.setScreen(game.MAIN); break;
 		case 3: Gdx.app.exit(); break;
 		}
 		

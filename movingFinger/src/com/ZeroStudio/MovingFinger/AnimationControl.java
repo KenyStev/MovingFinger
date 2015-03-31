@@ -1,8 +1,5 @@
 package com.ZeroStudio.MovingFinger;
 
-import static com.ZeroStudio.MovingFinger.AnimationControl.aceleracion;
-import static com.ZeroStudio.MovingFinger.AnimationControl.velocidad;
-
 import com.badlogic.gdx.Gdx;
 
 public class AnimationControl {
@@ -10,6 +7,13 @@ public class AnimationControl {
 	public static boolean UP=false, DOWN=true;
 	public static float velocidad = -500;
 	public static float aceleracion = 0;
+	public static byte screenSelect = 0;
+	
+	public static void init(){
+		velocidad=-500;
+		UP=false;
+		DOWN=true;
+	}
 	
 	public static void acelerar() {
 		if (aceleracion <= 240f)

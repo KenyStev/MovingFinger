@@ -43,9 +43,7 @@ public class MainScreen extends AbstractScreen{
 		imgFondo = new Image(titulo);
 		stage.addActor(imgFondo);
 		
-		velocidad=-500;
-		UP=false;
-		DOWN=true;
+		init(); //Inicia los valores de las animaciones
 		
 		//Prueba de BackMenu
 		Texture text= new Texture(Gdx.files.internal("backMenuPrin.png"));
